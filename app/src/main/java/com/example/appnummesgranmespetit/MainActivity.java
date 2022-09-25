@@ -15,20 +15,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
+    int contador=0;
+    int contganar=0;
+    int numSec;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final int numSec=(int)(Math.random()*(100-1+1)+1);
-        final EditText et=findViewById(R.id.NumeroIntroducido);
+        numSec=(int)(Math.random()*(100-1+1)+1);
+        EditText et=findViewById(R.id.NumeroIntroducido);
         final Button b=findViewById(R.id.enviar);
-        final TextView intent=findViewById(R.id.intentos);
-        final TextView registro=findViewById(R.id.registro);
-        final AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+        TextView intent=findViewById(R.id.intentos);
+        TextView registro=findViewById(R.id.registro);
+        TextView ganar=findViewById(R.id.ganar);
+        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
         registro.setMovementMethod(new ScrollingMovementMethod());
         b.setOnClickListener(new View.OnClickListener() {
-            int contador=0;
+
             @Override
             public void onClick(View v) {
                 Context context = getApplicationContext();
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     toast.show();
                 } else {
                     contador++;
+                    intent.setText("Intentos: "+contador);
                     if (Integer.parseInt(et.getText().toString()) == numSec) {
                         CharSequence text = "Has adivinado el numero!";
                         int duration = Toast.LENGTH_LONG;
@@ -47,13 +51,21 @@ public class MainActivity extends AppCompatActivity {
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
                         registro.append("Has adivinado el numero!\n");
-                        builder.setTitle("Has acertado!").setMessage("Dale a aceptar para generar un nuevo numero").setPositiveButton("Aceptar",
+                        builder.setTitle("Felicidades").setMessage("Has acertado!\n"+intent.getText().toString()+"\nDale a aceptar para generar un nuevo numero\nSe reiniciaran los intentos y se borrara el registro").setCancelable(false).setPositiveButton("Aceptar",
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        numSec=(int)(Math.random()*(100-1+1)+1);
+                                        contador=0;
+                                        intent.setText("Intentos: "+contador);
+                                        registro.setText("");
+                                        contganar++;
+                                        ganar.setText("Partidas ganadas: "+contganar);
 
                                     }
                                 });
+                        AlertDialog alerta= builder.create();
+                        alerta.show();
 
 
                     } else if (Integer.parseInt(et.getText().toString()) < numSec) {
@@ -71,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                         toast.show();
                         registro.append("El numero "+et.getText().toString()+" es mas grande que el que tienes que adivinar!\n");
                     }
-                    intent.setText("Intentos: "+contador);
                     et.setText("");
                 }
             }
