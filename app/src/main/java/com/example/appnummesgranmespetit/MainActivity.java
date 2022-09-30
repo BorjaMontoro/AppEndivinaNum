@@ -20,11 +20,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     int contador=0;
-    int contganar=0;
     int numSec;
-    ArrayList<Usuario> usuarios=new ArrayList<Usuario>();
+    static ArrayList<Usuario> usuarios=new ArrayList<Usuario>();
 
-    public ArrayList<Usuario> getUsuarios() {
+    static public ArrayList<Usuario> getUsuarios() {
         return usuarios;
     }
     @Override
@@ -36,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
         final Button b=findViewById(R.id.enviar);
         TextView intent=findViewById(R.id.intentos);
         TextView registro=findViewById(R.id.registro);
-        TextView ganar=findViewById(R.id.ganar);
-        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-        AlertDialog.Builder guardar=new AlertDialog.Builder(MainActivity.this);
-        EditText nombre=new EditText(this);
         final Button rec=findViewById(R.id.paginarecord);
         registro.setMovementMethod(new ScrollingMovementMethod());
         Log.i("Info","Este es el valor "+String.valueOf(numSec));//quitar esto al final
@@ -63,41 +58,34 @@ public class MainActivity extends AppCompatActivity {
 
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
+                        AlertDialog.Builder guardar=new AlertDialog.Builder(MainActivity.this);
                         registro.append("Has adivinado el numero!\n");
-                        builder.setTitle("Felicidades").setMessage("Has acertado!\n"+intent.getText().toString()+"\nDale a aceptar para generar un nuevo numero\nSe reiniciaran los intentos y se borrara el registro").setCancelable(false).setPositiveButton("Aceptar",
+                        EditText nombre=new EditText(MainActivity.this);
+                        guardar.setView(nombre);
+                        guardar.setTitle("Guardar datos").setMessage("Quieres guardar tu record?\nSi quieres guardar los datos por favor introduzca un nombre").setPositiveButton("Guardar",
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        numSec=(int)(Math.random()*(100-1+1)+1);
+                                        usuarios.add(new Usuario(nombre.getText().toString(),contador));
                                         contador=0;
                                         intent.setText("Intentos: "+contador);
-                                        registro.setText("");
-                                        contganar++;
-                                        ganar.setText("Partidas ganadas: "+contganar);
-                                        guardar.setTitle("Guardar datos").setMessage("Quieres guardar tu record?\nSi quieres guardar los datos porfavor introduzca un nombre").setView(nombre).setPositiveButton("Si",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        usuarios.add(new Usuario(nombre.getText().toString(),contador));
-
-                                                    }
-
-                                    }).setNegativeButton("No",new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-
-
-
-                                            }
-
-                                        });
-                                        AlertDialog guardarD= guardar.create();
-                                        guardarD.show();
                                     }
-                                });
-                        AlertDialog alerta= builder.create();
-                        alerta.show();
 
+                                    }).setNegativeButton("No guardar",new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            contador=0;
+                                            intent.setText("Intentos: "+contador);
+
+
+                                        }
+
+                                    });
+                        AlertDialog guardarD= guardar.create();
+                        guardarD.show();
+                        numSec=(int)(Math.random()*(100-1+1)+1);
+                        Log.i("Info","Este es el valor "+String.valueOf(numSec));//quitar esto al final;
+                        registro.setText("");
 
                     } else if (Integer.parseInt(et.getText().toString()) < numSec) {
                         CharSequence text = "El numero que tienes que adivinar es mas grande que "+et.getText().toString();
@@ -122,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent1=new Intent(MainActivity.this,RecordsActivity.class);
-                intent1.putExtra("Records",usuarios);
                 startActivity(intent1);
 
             }
