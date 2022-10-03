@@ -8,13 +8,13 @@
 
     <TextView
         android:id="@+id/record"
-        android:layout_width="367dp"
-        android:layout_height="530dp"
+        android:layout_width="361dp"
+        android:layout_height="440dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.542" />
+        app:layout_constraintVertical_bias="0.449" />
 
     <TextView
         android:id="@+id/textView3"

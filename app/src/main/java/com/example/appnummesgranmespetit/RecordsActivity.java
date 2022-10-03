@@ -22,8 +22,9 @@ public class RecordsActivity extends AppCompatActivity {
         final Button vol=findViewById(R.id.volver);
         records.setMovementMethod(new ScrollingMovementMethod());
         ArrayList<Usuario> usuarios = MainActivity.getUsuarios();
+        records.setText("");
         for (Usuario usu:usuarios){
-            Log.i("INFO",String.valueOf(usu));
+            records.append(String.valueOf(usu)+"\n_______________________________________________________\n");
         }
         vol.setOnClickListener(new View.OnClickListener() {
             @Override
