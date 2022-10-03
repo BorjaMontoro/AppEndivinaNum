@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         final Button rec=findViewById(R.id.paginarecord);
         registro.setMovementMethod(new ScrollingMovementMethod());
         Log.i("Info","Este es el valor "+String.valueOf(numSec));//quitar esto al final
+
         b.setOnClickListener(new View.OnClickListener() {
 
             @Override
